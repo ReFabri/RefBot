@@ -22,8 +22,6 @@ export const userSignup = async (
   next: NextFunction
 ) => {
   try {
-    //TODO Check if user already exists
-    console.log(req.body);
     const { name, email, password } = req.body;
     const hashedPassword = await hash(password, 16);
     const user = new User({ name, email, password: hashedPassword });
