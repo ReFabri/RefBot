@@ -37,6 +37,7 @@ export const userSignup = async (
       domain: process.env.DOMAIN,
       httpOnly: true,
       signed: true,
+      secure: true,
     });
     const token = createToken(user._id.toString(), user.email, "7d");
 
@@ -49,6 +50,7 @@ export const userSignup = async (
       expires,
       httpOnly: true,
       signed: true,
+      secure: true,
     });
 
     return res.status(201).json({ message: "OK", id: user._id.toString() });
@@ -76,6 +78,7 @@ export const userLogin = async (
       domain: process.env.DOMAIN,
       httpOnly: true,
       signed: true,
+      secure: true,
     });
     const token = createToken(user._id.toString(), user.email, "7d");
 
@@ -88,6 +91,7 @@ export const userLogin = async (
       expires,
       httpOnly: true,
       signed: true,
+      secure: true,
     });
 
     return res.status(200).json({ message: "OK", id: user._id.toString() });
