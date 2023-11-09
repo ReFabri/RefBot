@@ -35,6 +35,11 @@ const ChatItem = ({
 }) => {
   const messageBlocks = extractCodeFromString(content);
   const auth = useAuth();
+  const avatarName = auth?.user?.name
+    .split(" ")
+    .filter((str, i) => i <= 1)
+    .map((str) => str[0])
+    .join("");
   return role == "assistant" ? (
     <Box
       sx={{
@@ -77,8 +82,7 @@ const ChatItem = ({
       }}
     >
       <Avatar sx={{ ml: "0", bgcolor: "black", color: "white" }}>
-        {auth?.user?.name[0]}
-        {auth?.user?.name.split(" ")[1][0]}
+        {avatarName}
       </Avatar>
       <Box>
         {!messageBlocks && (
