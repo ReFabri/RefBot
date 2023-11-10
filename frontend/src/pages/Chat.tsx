@@ -5,7 +5,8 @@ import { useAuth } from "../context/AuthContext";
 import ChatItem from "../components/chat/ChatItem";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { sendChatRequest } from "../helpers/apiCommunicator";
+import { getUserChats, sendChatRequest } from "../helpers/apiCommunicator";
+import toast from "react-hot-toast";
 
 type Message = {
   role: string;
@@ -34,6 +35,21 @@ const Chat = () => {
     setChatMessages([...chatData.chats]);
   };
   const handleDeleteChats = async () => {};
+  useEffect(() => {
+    if (auth?.isLoggedIn && auth?.user) {
+      toast.loading("Loading Chats", { id: "loadchats" });
+      getUserChats()
+        .then((data) => {
+          setChatMessages([...data.chats]);
+          toast.success("Chats loaded", { id: "loadchats" });
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Error loading chats", { id: "loadchats" });
+        });
+    }
+  }, [auth?.isLoggedIn, auth?.user]);
+
   useEffect(() => {
     if (!auth?.user) {
       return navigate("/login");
