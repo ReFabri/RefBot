@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Avatar, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -12,19 +11,8 @@ function extractCodeFromString(message: string) {
 }
 
 function isCodeBlock(str: string) {
-  if (
-    str.includes("=") ||
-    str.includes(";") ||
-    str.includes("[") ||
-    str.includes("]") ||
-    str.includes("{") ||
-    str.includes("}") ||
-    str.includes("#") ||
-    str.includes("//")
-  ) {
-    return true;
-  }
-  return false;
+  const regex = /[;=#[\]{}]|\/\//;
+  return regex.test(str);
 }
 const ChatItem = ({ content, role }: { content: string; role: string }) => {
   const messageBlocks = extractCodeFromString(content);
@@ -46,7 +34,7 @@ const ChatItem = ({ content, role }: { content: string; role: string }) => {
       }}
     >
       <Avatar sx={{ ml: "0" }}>
-        <img src="openai.png" alt="openai" width={"30px"} />
+        <img src="robotAvatar.png" alt="RefBot" width={"30px"} />
       </Avatar>
       <Box>
         {!messageBlocks && (
@@ -56,7 +44,10 @@ const ChatItem = ({ content, role }: { content: string; role: string }) => {
           messageBlocks.length &&
           messageBlocks.map((block) =>
             isCodeBlock(block) ? (
-              <SyntaxHighlighter style={coldarkDark} language="javascript">
+              <SyntaxHighlighter
+                style={coldarkDark}
+                language={block.split(" ")[0]}
+              >
                 {block}
               </SyntaxHighlighter>
             ) : (
@@ -86,7 +77,10 @@ const ChatItem = ({ content, role }: { content: string; role: string }) => {
           messageBlocks.length &&
           messageBlocks.map((block) =>
             isCodeBlock(block) ? (
-              <SyntaxHighlighter style={coldarkDark} language="javascript">
+              <SyntaxHighlighter
+                style={coldarkDark}
+                language={block.split(" ")[0]}
+              >
                 {block}
               </SyntaxHighlighter>
             ) : (
