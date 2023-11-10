@@ -5,7 +5,11 @@ import { useAuth } from "../context/AuthContext";
 import ChatItem from "../components/chat/ChatItem";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { getUserChats, sendChatRequest } from "../helpers/apiCommunicator";
+import {
+  deleteUserChats,
+  getUserChats,
+  sendChatRequest,
+} from "../helpers/apiCommunicator";
 import toast from "react-hot-toast";
 
 type Message = {
@@ -34,7 +38,17 @@ const Chat = () => {
     const chatData = await sendChatRequest(content);
     setChatMessages([...chatData.chats]);
   };
-  const handleDeleteChats = async () => {};
+  const handleDeleteChats = async () => {
+    try {
+      toast.loading("Deleting Chats", { id: "deletechats" });
+      await deleteUserChats();
+      setChatMessages([]);
+      toast.success("Chats deleted", { id: "deletechats" });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting chats", { id: "deletechats" });
+    }
+  };
   useEffect(() => {
     if (auth?.isLoggedIn && auth?.user) {
       toast.loading("Loading Chats", { id: "loadchats" });
@@ -48,7 +62,7 @@ const Chat = () => {
           toast.error("Error loading chats", { id: "loadchats" });
         });
     }
-  }, [auth?.isLoggedIn, auth?.user]);
+  }, [auth]);
 
   useEffect(() => {
     if (!auth?.user) {

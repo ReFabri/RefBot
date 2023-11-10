@@ -4,6 +4,7 @@ import { chatCompletionValidator, validate } from "../utils/validators.js";
 import {
   generateChatCompletion,
   sendChatsToUser,
+  deleteChats,
 } from "../controllers/chatControllers.js";
 
 const chatRoutes = Router();
@@ -13,6 +14,8 @@ chatRoutes.post(
   verifyToken,
   generateChatCompletion
 );
+
 chatRoutes.get("all-chats", verifyToken, sendChatsToUser);
+chatRoutes.delete("/delete", verifyToken, deleteChats);
 
 export default chatRoutes;
