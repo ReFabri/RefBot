@@ -126,3 +126,30 @@ export const verifyUser = async (
     return res.status(200).json({ message: "ERROR", cause: error.message });
   }
 };
+
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await User.findById(res.locals.jwtData.id);
+    if (!user) {
+      return res.status(401).send("User not registered or incorrect token");
+    }
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      return res.status(401).send("User and Token ID's don't match");
+    }
+    res.clearCookie(COOKIE_NAME, {
+      path: "/",
+      domain: process.env.DOMAIN,
+      httpOnly: true,
+      signed: true,
+      secure: true,
+    });
+    return res.status(200).json({ message: "OK" });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "ERROR", cause: error.message });
+  }
+};
