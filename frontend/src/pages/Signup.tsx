@@ -38,7 +38,7 @@ const Signup = () => {
         marginTop={8}
         display={{ md: "flex", sm: "none", xs: "none" }}
       >
-        <img src="robot3.png" alt="Robot" style={{ width: "400px" }} />
+        <img src="robot2.png" alt="Robot" style={{ width: "400px" }} />
       </Box>
       <Box
         display="flex"
