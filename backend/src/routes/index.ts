@@ -8,6 +8,6 @@ const appRouter = Router();
 appRouter.use("/user", userRoutes);
 
 // domain/api/v1/chats
-appRouter.use("/chats", chatRoutes);
+appRouter.use("/chat", chatRoutes);
 
 export default appRouter;

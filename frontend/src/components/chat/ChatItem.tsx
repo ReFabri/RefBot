@@ -26,13 +26,7 @@ function isCodeBlock(str: string) {
   }
   return false;
 }
-const ChatItem = ({
-  content,
-  role,
-}: {
-  content: string;
-  role: "user" | "assistant";
-}) => {
+const ChatItem = ({ content, role }: { content: string; role: string }) => {
   const messageBlocks = extractCodeFromString(content);
   const auth = useAuth();
   const avatarName = auth?.user?.name

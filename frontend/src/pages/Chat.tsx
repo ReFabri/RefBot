@@ -1,10 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/AuthContext";
 import ChatItem from "../components/chat/ChatItem";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { sendChatRequest } from "../helpers/apiCommunicator";
+
+type Message = {
+  role: string;
+  content: string;
+};
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -15,17 +21,18 @@ const Chat = () => {
     .filter((str, i) => i <= 1)
     .map((str) => str[0])
     .join("");
-  const chatMessages = [
-    { role: "user", content: "Hello, how are you?" },
-    { role: "assistant", content: "I'm good, thank you!" },
-    { role: "user", content: "What is your favorite color?" },
-    { role: "assistant", content: "My favorite color is blue." },
-    { role: "user", content: "What is your favorite food?" },
-    { role: "assistant", content: "My favorite food is pizza." },
-    { role: "user", content: "What is your favorite movie?" },
-    { role: "assistant", content: "My favorite movie is The Matrix." },
-  ];
-  const handleSubmit = async () => {};
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+
+  const handleSubmit = async () => {
+    const content = inputRef.current?.value as string;
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = "";
+    }
+    const newMessage: Message = { role: "user", content };
+    setChatMessages((prev) => [...prev, newMessage]);
+    const chatData = await sendChatRequest(content);
+    setChatMessages([...chatData.chats]);
+  };
   const handleDeleteChats = async () => {};
   useEffect(() => {
     if (!auth?.user) {
@@ -132,7 +139,6 @@ const Chat = () => {
           }}
         >
           {chatMessages.map((chat, index) => (
-            //@ts-ignore
             <ChatItem content={chat.content} role={chat.role} key={index} />
           ))}
         </Box>
