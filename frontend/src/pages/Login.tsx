@@ -73,8 +73,8 @@ const Login = () => {
             >
               Login
             </Typography>
-            <CustomizedInput name="email" label="email" type="email" />
-            <CustomizedInput name="password" label="password" type="password" />
+            <CustomizedInput name="email" label="Email" type="email" />
+            <CustomizedInput name="password" label="Password" type="password" />
             <Button
               type="submit"
               sx={{
